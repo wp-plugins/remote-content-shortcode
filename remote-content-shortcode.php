@@ -4,7 +4,7 @@ Plugin Name: Remote Content Shortcode
 Plugin URI: http://www.doublesharp.com
 Description: Embed remote content with a shortcode
 Author: Justin Silver
-Version: 1.0
+Version: 1.1
 Author URI: http://doublesharp.com
 License: GPL2
 */

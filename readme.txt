@@ -3,7 +3,7 @@ Contributors: doublesharp
 Tags: shortcode, content, import, http, web page, scraper, DOM, remote
 Requires at least: 2.8
 Tested up to: 3.9.1
-Stable tag: 1.0
+Stable tag: 1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,5 +82,11 @@ If you have command line access to your server, the `curl` command is a good way
 2. Displaying the contents of a PHP file from the WordPress Plugin Subversion Repository using SyntaxHighlighter.
 
 == Changelog ==
+= 1.1 =
+* CSS selectors for filtering and removal.
+* Regular expression replacement support.
+* Support for `strip_tags`.
+* Added attribute to allow caching to be disabled.
+
 = 1.0 =
 Initial version.
