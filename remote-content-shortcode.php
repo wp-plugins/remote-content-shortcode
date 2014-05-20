@@ -4,7 +4,7 @@ Plugin Name: Remote Content Shortcode
 Plugin URI: http://www.doublesharp.com
 Description: Embed remote content with a shortcode
 Author: Justin Silver
-Version: 1.1
+Version: 1.2
 Author URI: http://doublesharp.com
 License: GPL2
 */
@@ -32,8 +32,7 @@ class RemoteContentShortcode {
 	function remote_content_shortcode( $atts, $content=null ) {
 		// decode and remove quotes, if we wanted to (for use with SyntaxHighlighter)
 		if ( isset( $atts['decode_atts'] ) ) {
-			$decode_atts = html_entity_decode( $atts['decode_atts'] );
-			switch ( $decode_atts ) {
+			switch ( strtolower( html_entity_decode( $atts['decode_atts'] ) ) ) {
 			 	case 'true': case '"true"':
 					foreach ( $atts as $key => &$value ) {
 						$value = html_entity_decode( $value );
@@ -47,7 +46,7 @@ class RemoteContentShortcode {
 
 		$atts = shortcode_atts( 
 			array(
-				'userpwd' => '',
+				'userpwd' => false,
 				'method' => 'GET',
 				'timeout' => 10,
 				'url' => '',
@@ -63,13 +62,19 @@ class RemoteContentShortcode {
 			$atts
 		);
 
+		// extract attributes
+		extract( $atts );
+
+		// normalize parameters
+		$is_cache = strtolower( $cache ) != 'false';
+		$is_htmlentities = strtolower( $htmlentities ) == 'true';
+		$is_strip_tags = strtolower( $strip_tags ) == 'true';
+		$method = strtoupper( $method );
+
 		$group = 'remote_content_cache';
 		$key = implode( $atts );
 		$error = false;
-		$response = wp_cache_get( $key, $group );
-		if ( true || false === $response ){
-			// extract attributes
-			extract( $atts );
+		if ( ! $is_cache || false === ( $response = wp_cache_get( $key, $group ) ) ){
 
 			// if we don't have a url, don't bother
 			if ( empty( $url ) ) return;
@@ -108,32 +113,31 @@ class RemoteContentShortcode {
 			curl_close( $ch );									// close the resource
 
 			if ( $response ){
+				
 				if ( $selector || $remove ){
 					include_once( 'inc/phpQuery.php' );			// include phpQuery	
 					phpQuery::newDocument( $response );			// load the response HTML DOM
 					if ( $remove )								// $remove defaults to false
 						pq( $remove )->remove();				// remove() the elements
-
 					$response = pq( $selector );				// use a CSS selector or default to everything
 				}
 
 				if ( $find )									// perform a regex find and replace
 					$response = preg_replace( $find, $replace || '', $response );
 
-				if ( $strip_tags == 'true' ) 
+				if ( $is_strip_tags ) 
 					$response = strip_tags( $response );		// strip the tags
 
-				if ( $htmlentities == 'true' )
+				if ( $is_htmlentities )
 					$response = htmlentities( $response );		// HTML encode the response
 
 			} else {
 				$response = $error;								// send back the error unmodified so we can debug
 			}
 
-			if ( $cache != 'false' )
+			if ( $is_cache )
 				wp_cache_set( $key, $response, $group, $cache_ttl );	// Cache the result based on the TTL
 		}
-		
 		return $response;
 	}
 }

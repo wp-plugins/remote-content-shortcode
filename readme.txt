@@ -3,7 +3,7 @@ Contributors: doublesharp
 Tags: shortcode, content, import, http, web page, scraper, DOM, remote
 Requires at least: 2.8
 Tested up to: 3.9.1
-Stable tag: 1.1
+Stable tag: 1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -34,7 +34,7 @@ This shortcode will let you...
 * `timeout=[ 0-9... `**`10`**` ]`
  * the request timeout in seconds if it can't be fetched from the cache, defaults to **`10` seconds**.
 * `userpwd=[`**` username:password` **`| post_meta | site_option | constant ]`
- * the username and password to send for `BASIC` authentication. It is recommended to not set the username and password directly in the tag, as it will be visible on your site if this plugin is disabled, and instead use one of the other options. By order of priority, if the value matches a post `meta_key` the `meta_value` is used, if it matches a `site_option` the `option_value` is used, and if it matches a constant the constant value is used, otherwise the string data is parsed as is. The format is `username:password`.
+ * the username and password to send for `BASIC` authentication. It is recommended to not set the username and password directly in the tag, as ***YOUR PASSWORD WILL BE PUBLICLY VISIBLE ON YOUR WEBSITE IF THIS PLUGIN IS DISABLED***, and instead use one of the other options. By order of priority, if the value matches a post `meta_key` the `meta_value` is used, if it matches a `site_option` the `option_value` is used, and if it matches a constant the constant value is used, otherwise the string data is parsed as is. The format is `username:password`.
 * `htmlentities=[`**` false `**`| true ]`
  * if you want to HTML encode the content for display, set to `true`, defaults to **`false`**.
 * `strip_tags=[`**` false `**`| true ]`
@@ -82,6 +82,10 @@ If you have command line access to your server, the `curl` command is a good way
 2. Displaying the contents of a PHP file from the WordPress Plugin Subversion Repository using SyntaxHighlighter.
 
 == Changelog ==
+= 1.2 =
+* Support case insensitive `true/false` and `GET/POST` values.
+* Bug fix for remote content caching.
+
 = 1.1 =
 * CSS selectors for filtering and removal.
 * Regular expression replacement support.
