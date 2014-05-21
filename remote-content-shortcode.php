@@ -123,7 +123,7 @@ class RemoteContentShortcode {
 				}
 
 				if ( $find )									// perform a regex find and replace
-					$response = preg_replace( $find, $replace || '', $response );
+					$response = preg_replace( $find, $replace | '', $response );
 
 				if ( $is_strip_tags ) 
 					$response = strip_tags( $response );		// strip the tags
