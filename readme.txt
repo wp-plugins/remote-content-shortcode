@@ -3,7 +3,7 @@ Contributors: doublesharp
 Tags: shortcode, content, import, http, web page, scraper, DOM, remote
 Requires at least: 2.8
 Tested up to: 3.9.1
-Stable tag: 1.2
+Stable tag: 1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,6 +82,10 @@ If you have command line access to your server, the `curl` command is a good way
 2. Displaying the contents of a PHP file from the WordPress Plugin Subversion Repository using SyntaxHighlighter.
 
 == Changelog ==
+= 1.3 =
+* Use double quotes in find/replace by using `%QUOT%` in its place, for example `find="~ (src|href)=(%QUOT%|')?(/)?~" replace=" \\1=\\2http://www.example.com/"`
+* Bug fix for regex/non-empty replace.
+
 = 1.2 =
 * Support case insensitive `true/false` and `GET/POST` values.
 * Bug fix for remote content caching.

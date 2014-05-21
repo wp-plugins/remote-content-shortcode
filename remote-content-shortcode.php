@@ -4,7 +4,7 @@ Plugin Name: Remote Content Shortcode
 Plugin URI: http://www.doublesharp.com
 Description: Embed remote content with a shortcode
 Author: Justin Silver
-Version: 1.2
+Version: 1.3
 Author URI: http://doublesharp.com
 License: GPL2
 */
@@ -20,16 +20,15 @@ class RemoteContentShortcode {
 	public static function init() {
 		if ( ! is_admin() && ! self::$instance ) {
 			self::$instance = new RemoteContentShortcode();
-
 			self::$instance->add_shortcode();
 		}
 	}
 
 	public function add_shortcode(){
-		add_shortcode( 'remote_content', array( $this, 'remote_content_shortcode' ) );
+		add_shortcode( 'remote_content', array( &$this, 'remote_content_shortcode' ) );
 	}
 
-	function remote_content_shortcode( $atts, $content=null ) {
+	public function remote_content_shortcode( $atts, $content=null ) {
 		// decode and remove quotes, if we wanted to (for use with SyntaxHighlighter)
 		if ( isset( $atts['decode_atts'] ) ) {
 			switch ( strtolower( html_entity_decode( $atts['decode_atts'] ) ) ) {
@@ -61,6 +60,10 @@ class RemoteContentShortcode {
 			), 
 			$atts
 		);
+
+		// convert %QUOT% to "
+		$atts['find'] = $this->quote_replace( $atts['find'] );
+		$atts['replace'] = $this->quote_replace( $atts['replace'] );
 
 		// extract attributes
 		extract( $atts );
@@ -139,6 +142,11 @@ class RemoteContentShortcode {
 				wp_cache_set( $key, $response, $group, $cache_ttl );	// Cache the result based on the TTL
 		}
 		return $response;
+	}
+
+	private function quote_replace( $input ){
+		if ( ! $input ) return false;
+		return str_replace( '%QUOT%', '"', strval( $input ) );
 	}
 }
 
